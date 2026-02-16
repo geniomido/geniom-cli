@@ -4,6 +4,7 @@ const { Command } = require('commander');
 const chalk = require('chalk');
 const { runAudit } = require('./src/audit');
 const { runRedditExport } = require('./src/reddit');
+const { runClean } = require('./src/clean');
 
 const program = new Command();
 
@@ -29,12 +30,13 @@ program.command('reddit')
     await runRedditExport(target, options);
   });
 
-// Command: Clean (Placeholder for now)
+// Command: Clean
 program.command('clean')
   .description('Clean AI-generated code artifacts')
   .argument('<file>', 'File to clean')
-  .action((file) => {
-    console.log(chalk.yellow(`✨ AI Cleaner coming soon to CLI. Use the standalone script for now.`));
+  .option('-i, --inplace', 'Overwrite file', false)
+  .action((file, options) => {
+    runClean(file, options);
   });
 
 program.parse();
