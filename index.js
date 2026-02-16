@@ -3,6 +3,7 @@
 const { Command } = require('commander');
 const chalk = require('chalk');
 const { runAudit } = require('./src/audit');
+const { runRedditExport } = require('./src/reddit');
 
 const program = new Command();
 
@@ -11,12 +12,29 @@ program
   .description('💎 Geniom CLI - Autonomous Developer Tools')
   .version('1.0.0');
 
-// Command: Audit (Dependency Graveyard)
+// Command: Audit
 program.command('audit')
   .description('Find abandoned and deprecated dependencies')
   .argument('[dir]', 'Directory to scan', process.cwd())
   .action(async (dir) => {
     await runAudit(dir);
+  });
+
+// Command: Reddit
+program.command('reddit')
+  .description('Export Reddit threads or subreddits to CSV')
+  .argument('<target>', 'Subreddit name (e.g. "programming") or Thread URL')
+  .option('-l, --limit <number>', 'Number of posts to fetch', 25)
+  .action(async (target, options) => {
+    await runRedditExport(target, options);
+  });
+
+// Command: Clean (Placeholder for now)
+program.command('clean')
+  .description('Clean AI-generated code artifacts')
+  .argument('<file>', 'File to clean')
+  .action((file) => {
+    console.log(chalk.yellow(`✨ AI Cleaner coming soon to CLI. Use the standalone script for now.`));
   });
 
 program.parse();
